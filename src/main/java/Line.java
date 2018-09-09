@@ -9,26 +9,32 @@ import java.util.concurrent.ExecutionException;
  */
 public class Line {
     public static void line(String text){
-        System.out.println(String.format("行数为: %d", countLine(text)));
+        int line = countLineChar(text) + (text.isEmpty() ? 0 : 1);
+        System.out.println(String.format("行数为: %d", line));
     }
 
-    private static int countLine(String text){
+
+    /**
+     * 数换行符
+     * @param text
+     * @return
+     */
+    private static int countLineChar(String text){
         int line = 0;
-        if (text.length() <= 1000){
-            // 如果少于 1000 个字符，则直接遍历
-            for (int i = 0; i <= text.length() - 3; i++) {
-                if (text.substring(i,i+3).equals("\r\n")){
+        if (text.length() <= 500){
+            // 如果少于 500 个字符，则直接遍历
+            for (int i = 0; i <= text.length() - 2; i++) {
+                if (text.substring(i,i+2).equals("\r\n")){
                     line++;
                 }
             }
             return line;
         }else {
-            // 大于 1000 个字符，递归并发处理
-            CompletableFuture<Integer> first = CompletableFuture.supplyAsync(() -> countLine(text.substring(0, 1000)));
-            CompletableFuture<Integer> last = CompletableFuture.supplyAsync(() -> countLine(text.substring(1000)));
+            // 大于 500 个字符，递归并发处理
+            CompletableFuture<Integer> first = CompletableFuture.supplyAsync(() -> countLineChar(text.substring(0, 500)));
+            CompletableFuture<Integer> last = CompletableFuture.supplyAsync(() -> countLineChar(text.substring(500)));
             // 计算分割中间部分是否有换行符
-            int end = 1002 >= text.length() ? text.length() : 1002;
-            int midLine = text.substring(997, end).contains("\r\n") ? 1 : 0;
+            int midLine = text.substring(499, 501).equals("\r\n") ? 1 : 0;
             try {
                 return first.get() + last.get() + midLine;
             } catch (InterruptedException | ExecutionException e) {
