@@ -21,19 +21,13 @@ public class WC {
         boolean hasSArg = Arrays.asList(args).stream().anyMatch(s -> s.equals("-s"));
         if (hasSArg){
             String originFileName = args[args.length - 1];
-            if (new File(originFileName).isDirectory()){
-                // 如果输入的是一个文件夹
-                texts = getTexts(new File(originFileName), Pattern.compile(".*"));
-            }else {
-                String temp = originFileName.replaceAll("\\.", "\\.");
-                int splitPoint = temp.lastIndexOf("\\");
-                String path = temp.substring(0, splitPoint);
-                String regexfileName = temp.substring(splitPoint + 1).replaceAll("\\*", ".*");
-                Pattern pattern = Pattern.compile(regexfileName.isEmpty() ? ".*" : regexfileName);
-                File file = new File(path);
-                texts = getTexts(file, pattern);
-            }
-
+            String temp = originFileName.replaceAll("\\.", "\\.");
+            int splitPoint = temp.lastIndexOf("\\");
+            String path = temp.substring(0, splitPoint);
+            String regexfileName = temp.substring(splitPoint + 1).replaceAll("\\*", ".*");
+            Pattern pattern = Pattern.compile(regexfileName.isEmpty() ? ".*" : regexfileName);
+            File file = new File(path);
+            texts = getTexts(file, pattern);
         }else {
             String text = ReadToString.readToString(args[args.length - 1]);
             texts = new HashMap<>();
