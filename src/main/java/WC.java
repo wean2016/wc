@@ -26,6 +26,7 @@ public class WC {
             switch (s){
                 case "-c" : Count.count(text); break;
                 case "-w" : Word.word(text); break;
+                case "-l" : Line.line(text); break;
                 default: break;
             }
         });
