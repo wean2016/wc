@@ -48,6 +48,7 @@ public class WC {
                     case "-c" : Count.count(text); break;
                     case "-w" : Word.word(text); break;
                     case "-l" : Line.line(text); break;
+                    case "-a" : Complex.complex(text); break;
                     default: break;
                 }
             });
