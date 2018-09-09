@@ -25,6 +25,7 @@ public class WC {
         Arrays.asList(args).subList(0, args.length-1).parallelStream().forEach(s -> {
             switch (s){
                 case "-c" : Count.count(text); break;
+                case "-w" : Word.word(text); break;
                 default: break;
             }
         });
